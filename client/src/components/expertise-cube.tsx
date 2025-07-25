@@ -67,6 +67,32 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
     setIsDragging(false);
   };
 
+  // Touch events for mobile support
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      setIsDragging(true);
+      const touch = e.touches[0];
+      setLastMousePos({ x: touch.clientX, y: touch.clientY });
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || e.touches.length !== 1) return;
+    
+    e.preventDefault(); // Prevent scrolling
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - lastMousePos.x;
+    const deltaY = touch.clientY - lastMousePos.y;
+    
+    setRotationX(prev => prev - deltaY * 0.5);
+    setRotationY(prev => prev + deltaX * 0.5);
+    setLastMousePos({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   const handleResetView = () => {
     setRotationX(-20);
     setRotationY(25);
@@ -94,15 +120,15 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
   return (
     <div className="w-full h-full relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Cube Controls */}
-      <div className="absolute top-4 left-4 z-10 bg-white rounded-lg shadow-lg p-3">
-        <div className="flex items-center space-x-2">
+      <div className="absolute top-2 left-2 md:top-4 md:left-4 z-10 bg-white rounded-lg shadow-lg p-2 md:p-3">
+        <div className="flex items-center space-x-1 md:space-x-2">
           <Button
             variant="ghost"
             size="icon"
             onClick={handleResetView}
             title="Reset View"
           >
-            <Home size={16} className="text-gray-600" />
+            <Home size={14} className="text-gray-600 md:w-4 md:h-4" />
           </Button>
           <Button
             variant="ghost"
@@ -110,7 +136,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
             onClick={handleZoomIn}
             title="Zoom In"
           >
-            <ZoomIn size={16} className="text-gray-600" />
+            <ZoomIn size={14} className="text-gray-600 md:w-4 md:h-4" />
           </Button>
           <Button
             variant="ghost"
@@ -118,7 +144,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
             onClick={handleZoomOut}
             title="Zoom Out"
           >
-            <ZoomOut size={16} className="text-gray-600" />
+            <ZoomOut size={14} className="text-gray-600 md:w-4 md:h-4" />
           </Button>
           <Button
             variant="ghost"
@@ -127,18 +153,21 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
             title="Auto Rotate"
             className={autoRotate ? "text-ms-blue" : "text-gray-600"}
           >
-            <RotateCcw size={16} />
+            <RotateCcw size={14} className="md:w-4 md:h-4" />
           </Button>
         </div>
       </div>
 
       {/* 3D Cube Container */}
       <div 
-        className="w-full h-full flex items-center justify-center perspective-1000"
+        className="w-full h-full flex items-center justify-center perspective-1000 touch-none"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
       >
         <div
@@ -148,8 +177,8 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
             transformStyle: 'preserve-3d',
             transform: `rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale3d(${scale}, ${scale}, ${scale})`,
             transition: isDragging ? 'none' : 'transform 0.3s ease',
-            width: '300px',
-            height: '300px',
+            width: 'min(300px, 60vw)',
+            height: 'min(300px, 60vw)',
           }}
         >
           {/* Front Face - Technical Skills */}
@@ -163,8 +192,8 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               }}
               onClick={() => onFaceClick("technicalSkills")}
             >
-              <div className="text-3xl mb-2">{faces[0].icon}</div>
-              <div className="text-sm font-bold">{faces[0].label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{faces[0].icon}</div>
+              <div className="text-xs md:text-sm font-bold">{faces[0].label}</div>
               <div className="text-xs mt-1">Score: {faces[0].score.toFixed(1)}/10</div>
             </div>
           )}
@@ -179,8 +208,8 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               }}
               onClick={() => onFaceClick("leadership")}
             >
-              <div className="text-3xl mb-2">{faces[1].icon}</div>
-              <div className="text-sm font-bold">{faces[1].label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{faces[1].icon}</div>
+              <div className="text-xs md:text-sm font-bold">{faces[1].label}</div>
               <div className="text-xs mt-1">Score: {faces[1].score.toFixed(1)}/10</div>
             </div>
           )}
@@ -195,8 +224,8 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               }}
               onClick={() => onFaceClick("projectManagement")}
             >
-              <div className="text-3xl mb-2">{faces[3].icon}</div>
-              <div className="text-sm font-bold">{faces[3].label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{faces[3].icon}</div>
+              <div className="text-xs md:text-sm font-bold">{faces[3].label}</div>
               <div className="text-xs mt-1">Score: {faces[3].score.toFixed(1)}/10</div>
             </div>
           )}
@@ -211,8 +240,8 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               }}
               onClick={() => onFaceClick("innovation")}
             >
-              <div className="text-3xl mb-2">{faces[4].icon}</div>
-              <div className="text-sm font-bold">{faces[4].label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{faces[4].icon}</div>
+              <div className="text-xs md:text-sm font-bold">{faces[4].label}</div>
               <div className="text-xs mt-1">Score: {faces[4].score.toFixed(1)}/10</div>
             </div>
           )}
@@ -227,8 +256,8 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               }}
               onClick={() => onFaceClick("communication")}
             >
-              <div className="text-3xl mb-2">{faces[2].icon}</div>
-              <div className="text-sm font-bold">{faces[2].label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{faces[2].icon}</div>
+              <div className="text-xs md:text-sm font-bold">{faces[2].label}</div>
               <div className="text-xs mt-1">Score: {faces[2].score.toFixed(1)}/10</div>
             </div>
           )}
@@ -243,36 +272,37 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               }}
               onClick={() => onFaceClick("domainKnowledge")}
             >
-              <div className="text-3xl mb-2">{faces[5].icon}</div>
-              <div className="text-sm font-bold">{faces[5].label}</div>
+              <div className="text-2xl md:text-3xl mb-1 md:mb-2">{faces[5].icon}</div>
+              <div className="text-xs md:text-sm font-bold">{faces[5].label}</div>
               <div className="text-xs mt-1">Score: {faces[5].score.toFixed(1)}/10</div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Employee Info Overlay */}
-      <div className="absolute bottom-4 left-4 bg-white rounded-lg shadow-lg p-4 max-w-xs">
-        <h3 className="font-semibold mb-2">Current Analysis</h3>
-        <div className="text-sm text-gray-600">
+      {/* Employee Info Overlay - Hidden on small screens */}
+      <div className="hidden md:block absolute bottom-2 md:bottom-4 left-2 md:left-4 bg-white rounded-lg shadow-lg p-2 md:p-4 max-w-xs">
+        <h3 className="font-semibold mb-2 text-sm md:text-base">Current Analysis</h3>
+        <div className="text-xs md:text-sm text-gray-600">
           <p>Overall Score: <span className="font-semibold text-ms-blue">{expertiseScore.overallScore.toFixed(1)}/10</span></p>
           <p className="text-xs mt-1">Last updated: {new Date(expertiseScore.lastUpdated).toLocaleDateString()}</p>
         </div>
       </div>
 
-      {/* Cube Legend */}
-      <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4">
-        <h4 className="font-medium mb-3 text-sm">Expertise Dimensions</h4>
-        <div className="space-y-2 text-xs">
-          {faceConfigs.map((face) => (
+      {/* Cube Legend - Compact on mobile */}
+      <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 bg-white rounded-lg shadow-lg p-2 md:p-4 max-w-xs">
+        <h4 className="font-medium mb-2 md:mb-3 text-xs md:text-sm">Dimensions</h4>
+        <div className="space-y-1 md:space-y-2 text-xs">
+          {faceConfigs.slice(0, 3).map((face) => (
             <div key={face.name} className="flex items-center">
               <div 
-                className="w-3 h-3 rounded mr-2" 
+                className="w-2 h-2 md:w-3 md:h-3 rounded mr-1 md:mr-2" 
                 style={{ backgroundColor: face.color }}
               />
-              <span>{face.label}</span>
+              <span className="text-xs md:text-sm">{face.label}</span>
             </div>
           ))}
+          <div className="text-xs text-gray-500 mt-1">+3 more...</div>
         </div>
       </div>
     </div>

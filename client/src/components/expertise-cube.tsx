@@ -23,8 +23,8 @@ const faceConfigs = [
 ];
 
 export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: ExpertiseCubeProps) {
-  const [rotationX, setRotationX] = useState(0);
-  const [rotationY, setRotationY] = useState(0);
+  const [rotationX, setRotationX] = useState(-20);
+  const [rotationY, setRotationY] = useState(25);
   const [isDragging, setIsDragging] = useState(false);
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const [autoRotate, setAutoRotate] = useState(false);
@@ -68,8 +68,8 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
   };
 
   const handleResetView = () => {
-    setRotationX(0);
-    setRotationY(0);
+    setRotationX(-20);
+    setRotationY(25);
     setScale(1);
   };
 

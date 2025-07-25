@@ -29,6 +29,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
   const [autoRotate, setAutoRotate] = useState(false);
   const [scale, setScale] = useState(1);
+  const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const cubeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -46,6 +47,15 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
       }
     };
   }, [autoRotate]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -110,6 +120,9 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
   const toggleAutoRotate = () => {
     setAutoRotate(!autoRotate);
   };
+
+  // Calculate adaptive cube half-size based on viewport
+  const cubeHalfSize = Math.min(150, Math.min(windowSize.width, windowSize.height) * 0.3 * 0.5);
 
   const faces = faceConfigs.map((config) => ({
     ...config,
@@ -187,7 +200,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[0].color,
-                transform: 'translateZ(150px)',
+                transform: `translateZ(${cubeHalfSize}px)`,
                 backdropFilter: 'blur(10px)',
               }}
               onClick={() => onFaceClick("technicalSkills")}
@@ -204,7 +217,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[1].color,
-                transform: 'rotateY(90deg) translateZ(150px)',
+                transform: `rotateY(90deg) translateZ(${cubeHalfSize}px)`,
               }}
               onClick={() => onFaceClick("leadership")}
             >
@@ -220,7 +233,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[3].color,
-                transform: 'rotateY(180deg) translateZ(150px)',
+                transform: `rotateY(180deg) translateZ(${cubeHalfSize}px)`,
               }}
               onClick={() => onFaceClick("projectManagement")}
             >
@@ -236,7 +249,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[4].color,
-                transform: 'rotateY(-90deg) translateZ(150px)',
+                transform: `rotateY(-90deg) translateZ(${cubeHalfSize}px)`,
               }}
               onClick={() => onFaceClick("innovation")}
             >
@@ -252,7 +265,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[2].color,
-                transform: 'rotateX(90deg) translateZ(150px)',
+                transform: `rotateX(90deg) translateZ(${cubeHalfSize}px)`,
               }}
               onClick={() => onFaceClick("communication")}
             >
@@ -268,7 +281,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
               className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[5].color,
-                transform: 'rotateX(-90deg) translateZ(150px)',
+                transform: `rotateX(-90deg) translateZ(${cubeHalfSize}px)`,
               }}
               onClick={() => onFaceClick("domainKnowledge")}
             >

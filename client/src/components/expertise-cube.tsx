@@ -146,7 +146,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
           className="relative preserve-3d"
           style={{
             transformStyle: 'preserve-3d',
-            transform: `rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`,
+            transform: `rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale3d(${scale}, ${scale}, ${scale})`,
             transition: isDragging ? 'none' : 'transform 0.3s ease',
             width: '300px',
             height: '300px',
@@ -155,7 +155,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
           {/* Front Face - Technical Skills */}
           {faces[0].isVisible && (
             <div
-              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:scale-105"
+              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[0].color,
                 transform: 'translateZ(150px)',
@@ -172,7 +172,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
           {/* Right Face - Leadership */}
           {faces[1].isVisible && (
             <div
-              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:scale-105"
+              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[1].color,
                 transform: 'rotateY(90deg) translateZ(150px)',
@@ -188,7 +188,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
           {/* Back Face - Project Management */}
           {faces[3].isVisible && (
             <div
-              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:scale-105"
+              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[3].color,
                 transform: 'rotateY(180deg) translateZ(150px)',
@@ -204,7 +204,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
           {/* Left Face - Innovation */}
           {faces[4].isVisible && (
             <div
-              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:scale-105"
+              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[4].color,
                 transform: 'rotateY(-90deg) translateZ(150px)',
@@ -220,7 +220,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
           {/* Top Face - Communication */}
           {faces[2].isVisible && (
             <div
-              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:scale-105"
+              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[2].color,
                 transform: 'rotateX(90deg) translateZ(150px)',
@@ -236,7 +236,7 @@ export function ExpertiseCube({ expertiseScore, filters, onFaceClick }: Expertis
           {/* Bottom Face - Domain Knowledge */}
           {faces[5].isVisible && (
             <div
-              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:scale-105"
+              className="absolute w-full h-full border-2 border-white/20 flex flex-col items-center justify-center text-white font-semibold cursor-pointer transition-all duration-300 hover:brightness-110"
               style={{
                 backgroundColor: faces[5].color,
                 transform: 'rotateX(-90deg) translateZ(150px)',
